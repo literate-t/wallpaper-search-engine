@@ -4,6 +4,7 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
+import { useState } from 'react';
 
 const Container = styled.div`
     position: relative;
@@ -12,11 +13,17 @@ const Container = styled.div`
 `;
 
 function App() {
+    const [query, setQuery] = useState('');
+
+    const onEnter = (input) => {
+        setQuery(input);
+    };
+
     return (
         <>
             <Container>
-                <Hero />
-                <ResultContainer />
+                <Hero onEnter={onEnter} />
+                <ResultContainer query={query} />
                 <Footer />
                 <ToggleThemeButton />
             </Container>
