@@ -27,10 +27,20 @@ const ResultContainer = ({
     onDecreaePage,
     page,
 }) => {
+    const [clickedImage, setClickedImage] = useState(null);
+
+    const setImageInvalid = () => {
+        setClickedImage(null);
+    };
+
     return (
         <Container>
-            {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
-            {/* <ImageModal /> */}
+            {clickedImage && (
+                <ImageModal
+                    clickedImage={clickedImage}
+                    setImageInvalid={setImageInvalid}
+                />
+            )}
             {data.hits?.length > 0 && (
                 <Pagination
                     numberOfPages={numberOfPages}
@@ -41,7 +51,13 @@ const ResultContainer = ({
             )}
             <ResultsWrapper>
                 {data.hits?.map((imgData) => (
-                    <ImageCard key={imgData.id} imgData={imgData} />
+                    <ImageCard
+                        key={imgData.id}
+                        imgData={imgData}
+                        onClick={() => {
+                            setClickedImage(imgData);
+                        }}
+                    />
                 ))}
                 {data.hits?.length === 0 && <EmptyResult />}
             </ResultsWrapper>
