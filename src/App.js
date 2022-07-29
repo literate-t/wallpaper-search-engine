@@ -4,7 +4,8 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import getImages from './api/getImages';
 
 const Container = styled.div`
     position: relative;
@@ -13,15 +14,24 @@ const Container = styled.div`
 `;
 
 const ParamsContext = createContext();
+
 function App() {
     const [query, setQuery] = useState('');
+
     const [params, setParams] = useState({
         orientation: '',
         order: '',
+        page: 1,
+        per_page: 20,
     });
 
-    const onClickSearchOptions = (e) => {
-        const { name, value } = e.target;
+    const [data, setData] = useState({});
+
+    const { orientation, order, per_page, page } = params;
+
+    const onSetParams = (e) => {
+        const { name } = e.target;
+        let value = name === 'page' ? parseInt(e.target.value) : e.target.value;
         setParams((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -29,20 +39,48 @@ function App() {
         setQuery(input);
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getImages({
+                q: query,
+                orientation,
+                order,
+                per_page,
+                page,
+            });
+            setData(data);
+        };
+
+        fetchData();
+    }, [query, orientation, order, page, per_page]);
+
+    const numberOfPages = data.totalHits
+        ? Math.ceil(data.totalHits / per_page)
+        : 0;
+
+    const onIncreaePage = () => {
+        setParams((prev) => ({ ...prev, page: page + 1 }));
+    };
+
+    const onDecreaePage = () => {
+        setParams((prev) => ({ ...prev, page: page - 1 }));
+    };
+
     return (
         <>
             <Container>
-                <ParamsContext.Provider value={{ onClickSearchOptions }}>
+                <ParamsContext.Provider value={onSetParams}>
                     <Hero onEnter={onEnter} />
+                    <ResultContainer
+                        data={data}
+                        numberOfPages={numberOfPages}
+                        onIncreaePage={onIncreaePage}
+                        onDecreaePage={onDecreaePage}
+                        page={page}
+                    />
+                    <Footer />
+                    <ToggleThemeButton />
                 </ParamsContext.Provider>
-                <ResultContainer
-                    q={query}
-                    params={params}
-                    // orientation={orientation}
-                    // order={order}
-                />
-                <Footer />
-                <ToggleThemeButton />
             </Container>
         </>
     );
@@ -50,4 +88,4 @@ function App() {
 
 export default App;
 
-export const useURLParams = () => useContext(ParamsContext);
+export const useSetParams = () => useContext(ParamsContext);

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useURLParams } from '../App';
+import { useOnClickSearchOptions, useSetParams } from '../App';
 
 const SearchOptionContainer = styled.div`
     display: flex;
@@ -26,14 +26,14 @@ const SearchOptionLabel = styled.p`
 `;
 
 const SearchOption = () => {
-    const { onClickSearchOptions } = useURLParams();
+    const onSetParams = useSetParams();
 
     return (
         <SearchOptionContainer>
             <SearchOptionUl>
                 <SearchOptionLi>
                     <SearchOptionLabel>정렬</SearchOptionLabel>
-                    <form id="order" onChange={onClickSearchOptions}>
+                    <form id="order" onChange={onSetParams}>
                         <input
                             type="radio"
                             name="order"
@@ -53,12 +53,13 @@ const SearchOption = () => {
                 </SearchOptionLi>
                 <SearchOptionLi>
                     <SearchOptionLabel>사진 방향</SearchOptionLabel>
-                    <form id="orientation" onChange={onClickSearchOptions}>
+                    <form id="orientation" onChange={onSetParams}>
                         <input
                             type="radio"
                             name="orientation"
                             id="all"
                             value="all"
+                            defaultChecked
                         />
                         <label htmlFor="all">모두</label>
                         <input
@@ -66,7 +67,6 @@ const SearchOption = () => {
                             name="orientation"
                             id="horizontal"
                             value="horizontal"
-                            defaultChecked
                         />
                         <label htmlFor="horizontal">가로</label>
                         <input
@@ -80,7 +80,7 @@ const SearchOption = () => {
                 </SearchOptionLi>
                 <SearchOptionLi>
                     <SearchOptionLabel>페이지 당 갯수</SearchOptionLabel>
-                    <form id="per_page">
+                    <form id="per_page" onClick={onSetParams}>
                         <input
                             type="radio"
                             name="per_page"

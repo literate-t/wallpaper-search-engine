@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as PrevIcon } from '../asset/prev.svg';
 import { ReactComponent as NextIcon } from '../asset/next.svg';
+import { useSetParams } from '../App';
 
 const Nav = styled.nav`
     display: flex;
@@ -24,18 +25,37 @@ const PageSelect = styled.select`
     }
 `;
 
-const Pagination = () => {
+const Pagination = ({ numberOfPages, onIncreaePage, onDecreaePage, page }) => {
+    const setParams = useSetParams();
     return (
         <Nav>
-            <PrevIcon width="24" cursor="pointer" fill="var(--text)" />
-            {`총 10 중 `}
-            <PageSelect name="page">
-                <option value={1} key={1}>
-                    1
-                </option>
+            {page !== 1 && (
+                <PrevIcon
+                    width="24"
+                    cursor="pointer"
+                    fill="var(--text)"
+                    onClick={onDecreaePage}
+                />
+            )}
+            {`총 ${numberOfPages} 중 `}
+            <PageSelect name="page" value={page} onChange={setParams}>
+                {Array(numberOfPages)
+                    .fill()
+                    .map((_, index) => (
+                        <option value={index + 1} key={index + 1}>
+                            {index + 1}
+                        </option>
+                    ))}
             </PageSelect>
             페이지
-            <NextIcon width="24" cursor="pointer" fill="var(--text)" />
+            {page !== numberOfPages && (
+                <NextIcon
+                    width="24"
+                    cursor="pointer"
+                    fill="var(--text)"
+                    onClick={onIncreaePage}
+                />
+            )}
         </Nav>
     );
 };

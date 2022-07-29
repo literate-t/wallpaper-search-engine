@@ -74,7 +74,7 @@ const Search = ({ onEnter }) => {
         if ('Enter' === e.code) {
             const currentInput = e.target.value;
 
-            onEnter(e, currentInput);
+            onEnter(currentInput);
 
             updateTags(currentInput);
 
@@ -116,6 +116,7 @@ const Search = ({ onEnter }) => {
             <SearchTagContainer>
                 {searchTags.map((tag, index) => (
                     <SearchTag
+                        key={tag + index}
                         tag={tag}
                         index={index}
                         onClickTag={onClickTag}

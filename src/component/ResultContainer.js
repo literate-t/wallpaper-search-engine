@@ -20,28 +20,25 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = ({ q, params }) => {
-    const [data, setData] = useState({});
-    const { orientation, order } = params;
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getImages({
-                q,
-                orientation,
-                order,
-            });
-            setData(data);
-        };
-
-        fetchData();
-    }, [q, orientation, order]);
-
+const ResultContainer = ({
+    data,
+    numberOfPages,
+    onIncreaePage,
+    onDecreaePage,
+    page,
+}) => {
     return (
         <Container>
             {/* ImgCard 클릭 시 해당 이미지의 정보로 ImageModal이 나타나야 합니다. */}
             {/* <ImageModal /> */}
-            {data.hits?.length > 0 && <Pagination />}
+            {data.hits?.length > 0 && (
+                <Pagination
+                    numberOfPages={numberOfPages}
+                    onIncreaePage={onIncreaePage}
+                    onDecreaePage={onDecreaePage}
+                    page={page}
+                />
+            )}
             <ResultsWrapper>
                 {data.hits?.map((imgData) => (
                     <ImageCard key={imgData.id} imgData={imgData} />
