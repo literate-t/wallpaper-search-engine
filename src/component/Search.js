@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../asset/search.svg';
 import SearchTag from './SearchTag';
@@ -48,16 +48,53 @@ const SearchOptionButton = styled.p`
 
 const Search = ({ onEnter }) => {
     const [searchOption, setSearchOption] = useState(false);
+
+    let tags = localStorage.getItem('tags');
+    tags = tags ? JSON.parse(tags) : [];
+    const [searchTags, setSearchTags] = useState(tags);
+
+    const refInput = useRef();
+
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
     };
 
-    const onSearch = (e) => {
-        if ('Enter' === e.code) {
-            onEnter(e.target.value);
-            e.target.value = '';
+    const updateSearchInput = (value) => {
+        refInput.current.value = value;
+    };
+
+    const updateTags = (currentInput) => {
+        const result = searchTags.find((item) => item === currentInput);
+        if (!result) {
+            setSearchTags((prev) => [...prev, currentInput]);
         }
     };
+
+    const onSearch = (e) => {
+        if ('Enter' === e.code) {
+            const currentInput = e.target.value;
+
+            onEnter(currentInput);
+
+            updateTags(currentInput);
+
+            updateSearchInput('');
+        }
+    };
+
+    const onClickTag = (tag) => {
+        onEnter(tag);
+
+        updateSearchInput(tag);
+    };
+
+    const onClickDelete = (index) => {
+        setSearchTags((prev) => prev.filter((_, idx) => index !== idx));
+    };
+
+    useEffect(() => {
+        localStorage.setItem('tags', JSON.stringify(searchTags));
+    }, [searchTags]);
 
     return (
         <>
@@ -67,6 +104,7 @@ const Search = ({ onEnter }) => {
                     <SearchInput
                         placeholder="검색어 입력 후 ENTER"
                         onKeyDown={onSearch}
+                        ref={refInput}
                     />
                     <SearchOptionButton onClick={toggleSearchOption}>
                         검색 옵션 {searchOption ? '닫기' : '열기'}
@@ -75,7 +113,14 @@ const Search = ({ onEnter }) => {
                 {searchOption && <SearchOption />}
             </SearchBoxContainer>
             <SearchTagContainer>
-                <SearchTag />
+                {searchTags.map((tag, index) => (
+                    <SearchTag
+                        tag={tag}
+                        index={index}
+                        onClickTag={onClickTag}
+                        onClickDelete={onClickDelete}
+                    />
+                ))}
             </SearchTagContainer>
         </>
     );

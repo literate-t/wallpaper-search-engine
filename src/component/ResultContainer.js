@@ -25,7 +25,7 @@ const ResultContainer = ({ query }) => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getImages({ q: query });
-            console.log(data);
+            //console.log(data);
             setData(data);
         };
 

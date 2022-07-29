@@ -23,11 +23,11 @@ const TagLabel = styled.span`
     }
 `;
 
-const SearchTag = () => {
+const SearchTag = ({ tag, index, onClickTag, onClickDelete }) => {
     return (
-        <Tag>
-            <TagLabel>최근 검색어</TagLabel>
-            <DeleteIcon width="12px" />
+        <Tag onClick={() => onClickTag(tag)}>
+            <TagLabel>{tag}</TagLabel>
+            <DeleteIcon onClick={() => onClickDelete(index)} width="12px" />
         </Tag>
     );
 };
