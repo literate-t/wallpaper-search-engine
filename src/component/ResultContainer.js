@@ -20,17 +20,22 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = ({ query }) => {
+const ResultContainer = ({ q, params }) => {
     const [data, setData] = useState({});
+    const { orientation, order } = params;
+
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getImages({ q: query });
-            //console.log(data);
+            const data = await getImages({
+                q,
+                orientation,
+                order,
+            });
             setData(data);
         };
 
         fetchData();
-    }, [query]);
+    }, [q, orientation, order]);
 
     return (
         <Container>

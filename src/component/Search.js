@@ -74,7 +74,7 @@ const Search = ({ onEnter }) => {
         if ('Enter' === e.code) {
             const currentInput = e.target.value;
 
-            onEnter(currentInput);
+            onEnter(e, currentInput);
 
             updateTags(currentInput);
 
@@ -105,6 +105,7 @@ const Search = ({ onEnter }) => {
                         placeholder="검색어 입력 후 ENTER"
                         onKeyDown={onSearch}
                         ref={refInput}
+                        name="q"
                     />
                     <SearchOptionButton onClick={toggleSearchOption}>
                         검색 옵션 {searchOption ? '닫기' : '열기'}

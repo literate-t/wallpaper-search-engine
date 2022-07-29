@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useURLParams } from '../App';
 
 const SearchOptionContainer = styled.div`
     display: flex;
@@ -25,12 +26,14 @@ const SearchOptionLabel = styled.p`
 `;
 
 const SearchOption = () => {
+    const { onClickSearchOptions } = useURLParams();
+
     return (
         <SearchOptionContainer>
             <SearchOptionUl>
                 <SearchOptionLi>
                     <SearchOptionLabel>정렬</SearchOptionLabel>
-                    <form id="order">
+                    <form id="order" onChange={onClickSearchOptions}>
                         <input
                             type="radio"
                             name="order"
@@ -43,13 +46,14 @@ const SearchOption = () => {
                             name="order"
                             id="popular"
                             value="popular"
+                            defaultChecked
                         />
                         <label htmlFor="popular">인기순</label>
                     </form>
                 </SearchOptionLi>
                 <SearchOptionLi>
                     <SearchOptionLabel>사진 방향</SearchOptionLabel>
-                    <form id="orientation">
+                    <form id="orientation" onChange={onClickSearchOptions}>
                         <input
                             type="radio"
                             name="orientation"
@@ -62,6 +66,7 @@ const SearchOption = () => {
                             name="orientation"
                             id="horizontal"
                             value="horizontal"
+                            defaultChecked
                         />
                         <label htmlFor="horizontal">가로</label>
                         <input
@@ -88,6 +93,7 @@ const SearchOption = () => {
                             name="per_page"
                             id="20"
                             value={20}
+                            defaultChecked
                         />
                         <label htmlFor="20">20</label>
                         <input

@@ -25,7 +25,7 @@ const TagLabel = styled.span`
 
 const SearchTag = ({ tag, index, onClickTag, onClickDelete }) => {
     return (
-        <Tag onClick={() => onClickTag(tag)}>
+        <Tag onClick={(e) => onClickTag(tag)}>
             <TagLabel>{tag}</TagLabel>
             <DeleteIcon onClick={() => onClickDelete(index)} width="12px" />
         </Tag>
