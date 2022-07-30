@@ -14,12 +14,15 @@ const Img = styled.img`
     width: 100%;
     border-radius: 4px;
 `;
-
+// before 646.1ms
+// after 279.9ms
 const ImageCard = ({ imgData, onClick }) => {
-    const { webformatURL, id } = imgData;
+    // const { webformatURL, id } = imgData;
+    const { webformatURL, id, previewURL } = imgData;
+
     return (
         <Card onClick={onClick} key={id}>
-            <Img src={webformatURL}></Img>
+            <Img src={previewURL} width={319} height={213}></Img>
         </Card>
     );
 };

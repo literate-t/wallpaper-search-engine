@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import ImageCard from './ImageCard';
-import ImageModal from './ImageModal';
+const ImageModal = React.lazy(() => import('./ImageModal'));
 
 const Container = styled.div`
     max-width: 1830px;
@@ -27,10 +27,12 @@ const ResultContainer = ({ data }) => {
     return (
         <Container>
             {clickedImage && (
-                <ImageModal
-                    clickedImage={clickedImage}
-                    setImageInvalid={setImageInvalid}
-                />
+                <Suspense fallback={<h1>로딩 중</h1>}>
+                    <ImageModal
+                        clickedImage={clickedImage}
+                        setImageInvalid={setImageInvalid}
+                    />
+                </Suspense>
             )}
             <ResultsWrapper>
                 {data.hits?.map((imgData, index) => (
