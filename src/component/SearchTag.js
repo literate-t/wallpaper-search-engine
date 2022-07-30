@@ -27,7 +27,13 @@ const SearchTag = ({ tag, index, onClickTag, onClickDelete }) => {
     return (
         <Tag onClick={(e) => onClickTag(tag)}>
             <TagLabel>{tag}</TagLabel>
-            <DeleteIcon onClick={() => onClickDelete(index)} width="12px" />
+            <DeleteIcon
+                onClick={(e) => {
+                    onClickDelete(index);
+                    e.stopPropagation();
+                }}
+                width="12px"
+            />
         </Tag>
     );
 };

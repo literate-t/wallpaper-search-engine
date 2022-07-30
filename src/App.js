@@ -4,8 +4,9 @@ import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import getImages from './api/getImages';
+import EmptyResult from './component/EmptyResult';
 
 const Container = styled.div`
     position: relative;
@@ -25,7 +26,7 @@ function App() {
         per_page: 20,
     });
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState({ total: 0, totalHits: 0, hits: [] });
 
     const { orientation, order, per_page, page } = params;
 
@@ -48,36 +49,61 @@ function App() {
                 per_page,
                 page,
             });
-            setData(data);
+            // 값 갱신에서 값 누적으로 변경해야 함
+            //setData(data);
+            if (1 === page) {
+                setData(data);
+            } else {
+                setData((prevData) => ({
+                    ...prevData,
+                    hits: [...prevData.hits, ...data.hits],
+                }));
+            }
         };
 
         fetchData();
     }, [query, orientation, order, page, per_page]);
 
-    const numberOfPages = data.totalHits
-        ? Math.ceil(data.totalHits / per_page)
-        : 0;
+    useEffect(() => {
+        setParams((prev) => ({ ...prev, page: 1 }));
+    }, [query, orientation, order, per_page]);
 
-    const onIncreaePage = () => {
-        setParams((prev) => ({ ...prev, page: page + 1 }));
-    };
+    const target = useRef();
+    useEffect(() => {
+        const onIncreaePage = () => {
+            setParams((prev) => ({
+                ...prev,
+                page: prev.page + 1,
+            }));
+        };
+        const callback = ([entry]) => {
+            if (!target.current) {
+                return;
+            }
+            if (entry.isIntersecting) {
+                onIncreaePage();
+            }
+        };
+        const observer = new IntersectionObserver(callback, {
+            threshold: 1,
+        });
+        observer.observe(target.current);
+    }, []);
 
-    const onDecreaePage = () => {
-        setParams((prev) => ({ ...prev, page: page - 1 }));
-    };
-
+    const numberOfPages = Math.ceil(data.totalHits / per_page);
+    // console.log(page, numberOfPages);
+    // console.log(data);
     return (
         <>
             <Container>
                 <ParamsContext.Provider value={onSetParams}>
                     <Hero onEnter={onEnter} />
-                    <ResultContainer
-                        data={data}
-                        numberOfPages={numberOfPages}
-                        onIncreaePage={onIncreaePage}
-                        onDecreaePage={onDecreaePage}
-                        page={page}
-                    />
+                    <ResultContainer data={data} />
+                    {numberOfPages !== page && (
+                        <div ref={target}>
+                            <EmptyResult isLoading={data.totalHits} />
+                        </div>
+                    )}
                     <Footer />
                     <ToggleThemeButton />
                 </ParamsContext.Provider>

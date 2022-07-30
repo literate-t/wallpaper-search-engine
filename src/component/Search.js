@@ -47,7 +47,7 @@ const SearchOptionButton = styled.p`
 `;
 
 const Search = ({ onEnter }) => {
-    const [searchOption, setSearchOption] = useState(false);
+    const [searchOption, setSearchOption] = useState(true);
 
     let tags = localStorage.getItem('tags');
     tags = tags ? JSON.parse(tags) : [];
@@ -111,7 +111,12 @@ const Search = ({ onEnter }) => {
                         검색 옵션 {searchOption ? '닫기' : '열기'}
                     </SearchOptionButton>
                 </SearchInputContainer>
-                {searchOption && <SearchOption />}
+                {/* 마운트가 다시 되면서 기존 선택값이 사라짐 */}
+                {/* {searchOption && <SearchOption />} */}
+                {/* 새로 마운트되지 않게 숨김 */}
+                <div hidden={searchOption}>
+                    <SearchOption />
+                </div>
             </SearchBoxContainer>
             <SearchTagContainer>
                 {searchTags.map((tag, index) => (

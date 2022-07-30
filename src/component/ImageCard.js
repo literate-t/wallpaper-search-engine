@@ -18,8 +18,8 @@ const Img = styled.img`
 const ImageCard = ({ imgData, onClick }) => {
     const { webformatURL, id } = imgData;
     return (
-        <Card onClick={onClick}>
-            <Img key={id} src={webformatURL}></Img>
+        <Card onClick={onClick} key={id}>
+            <Img src={webformatURL}></Img>
         </Card>
     );
 };
