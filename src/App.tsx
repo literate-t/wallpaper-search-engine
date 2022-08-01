@@ -88,7 +88,7 @@ function App() {
         setParams((prev) => ({ ...prev, page: 1 }));
     }, [query, orientation, order, per_page]);
 
-    const target = useRef();
+    const target = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const onIncreaePage = () => {
             setParams((prev) => ({
