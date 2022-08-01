@@ -4,7 +4,18 @@ import Search from './Search';
 const Container = styled.div`
     position: relative;
     width: 100%;
+`;
+
+const Content = styled.div`
+    position: relative;
+    width: 100%;
     background-color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 32px 16px 32px;
 `;
 
 const HeroTitle = styled.h1`
@@ -23,17 +34,6 @@ const HeroSubtitle = styled.p`
     margin: 0px;
     color: var(--highlight);
     font: 24px;
-`;
-
-const Content = styled.div`
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 120px 32px 16px 32px;
 `;
 
 const Hero = ({ onEnter }) => {

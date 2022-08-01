@@ -1,17 +1,30 @@
 import styled from 'styled-components';
 import ToggleThemeButton from './component/ToggleThemeButton';
-import Hero from './component/Hero';
 import ResultContainer from './component/ResultContainer';
 import Footer from './component/Footer';
 import './App.css';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import getImages from './api/getImages';
 import EmptyResult from './component/EmptyResult';
+import Title from './component/Title';
+import Search from './component/Search';
 
 const Container = styled.div`
     position: relative;
     background-color: var(--primary);
     min-height: 100vh;
+`;
+
+const Header = styled.div`
+    position: relative;
+    width: 100%;
+    background-color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 32px 16px 32px;
 `;
 
 const ParamsContext = createContext();
@@ -97,7 +110,11 @@ function App() {
         <>
             <Container>
                 <ParamsContext.Provider value={onSetParams}>
-                    <Hero onEnter={onEnter} />
+                    <Header>
+                        <Title />
+                        <Search onEnter={onEnter} />
+                    </Header>
+                    {/* <Hero onEnter={onEnter} /> */}
                     <ResultContainer data={data} />
                     {numberOfPages !== page && (
                         <div ref={target}>
