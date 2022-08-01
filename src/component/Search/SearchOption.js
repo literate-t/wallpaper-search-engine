@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useOnClickSearchOptions, useSetParams } from '../App';
+import { useSetParams } from '../../App';
 
 const SearchOptionContainer = styled.div`
     display: flex;

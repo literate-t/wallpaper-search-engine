@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import ToggleThemeButton from './component/ToggleThemeButton';
-import ResultContainer from './component/ResultContainer';
+import ImageContainer from './component/Image/ImageContainer';
 import Footer from './component/Footer';
 import './App.css';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import getImages from './api/getImages';
 import EmptyResult from './component/EmptyResult';
 import Title from './component/Title';
-import Search from './component/Search';
+import Search from './component/Search/Search';
 
 const Container = styled.div`
     position: relative;
@@ -115,7 +115,7 @@ function App() {
                         <Search onEnter={onEnter} />
                     </Header>
                     {/* <Hero onEnter={onEnter} /> */}
-                    <ResultContainer data={data} />
+                    <ImageContainer data={data} />
                     {numberOfPages !== page && (
                         <div ref={target}>
                             <EmptyResult isLoading={data.totalHits} />

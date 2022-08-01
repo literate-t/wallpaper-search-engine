@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ReactComponent as SearchIcon } from '../asset/search.svg';
+import { ReactComponent as SearchIcon } from '../../asset/search.svg';
 import SearchTag from './SearchTag';
 import SearchOption from './SearchOption';
 
@@ -55,14 +55,6 @@ const Search = ({ onEnter }) => {
 
     const refInput = useRef();
 
-    let debounceTimer;
-    const debounce = (callback, time, e) => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            callback(e);
-        }, time);
-    };
-
     const toggleSearchOption = () => {
         setSearchOption((prev) => !prev);
     };
@@ -114,9 +106,6 @@ const Search = ({ onEnter }) => {
                         onKeyDown={onSearch}
                         ref={refInput}
                         name="q"
-                        // onChange={(e) =>
-                        //     debounce(() => console.log(e.target.value), 200, e)
-                        // }
                     />
                     <SearchOptionButton onClick={toggleSearchOption}>
                         검색 옵션 {searchOption ? '닫기' : '열기'}

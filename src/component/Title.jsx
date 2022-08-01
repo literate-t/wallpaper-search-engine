@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Search from './Search';
 
 const HeroTitle = styled.h1`
     margin: 8px 0px;
