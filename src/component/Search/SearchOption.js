@@ -80,7 +80,7 @@ const SearchOption = () => {
                 </SearchOptionLi>
                 <SearchOptionLi>
                     <SearchOptionLabel>페이지 당 갯수</SearchOptionLabel>
-                    <form id="per_page" onClick={onSetParams}>
+                    <form id="per_page" onChange={onSetParams}>
                         <input
                             type="radio"
                             name="per_page"

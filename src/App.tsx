@@ -3,7 +3,14 @@ import ToggleThemeButton from './component/ToggleThemeButton';
 import ImageContainer from './component/Image/ImageContainer';
 import Footer from './component/Footer';
 import './App.css';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import {
+    ChangeEvent,
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import getImages from './api/getImages';
 import EmptyResult from './component/EmptyResult';
 import Title from './component/Title';
@@ -26,8 +33,8 @@ const Header = styled.div`
     text-align: center;
     padding: 120px 32px 16px 32px;
 `;
-
-const ParamsContext = createContext();
+type ParamType = {};
+const ParamsContext = createContext(null);
 
 function App() {
     const [query, setQuery] = useState('');
@@ -43,13 +50,13 @@ function App() {
 
     const { orientation, order, per_page, page } = params;
 
-    const onSetParams = (e) => {
+    const onSetParams = (e: ChangeEvent<HTMLInputElement>) => {
         const { name } = e.target;
         let value = name === 'page' ? parseInt(e.target.value) : e.target.value;
         setParams((prev) => ({ ...prev, [name]: value }));
     };
 
-    const onEnter = (input) => {
+    const onEnter = (input: string) => {
         setQuery(input);
     };
 
@@ -117,7 +124,7 @@ function App() {
                     {/* <Hero onEnter={onEnter} /> */}
                     <ImageContainer data={data} />
                     {numberOfPages !== page && (
-                        <div ref={target}>
+                        <div ref={target} onClick={(e) => console.log(e)}>
                             <EmptyResult isLoading={data.totalHits} />
                         </div>
                     )}
