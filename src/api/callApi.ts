@@ -1,8 +1,9 @@
-const callApi = async (url) => {
+import { IGetImagesResponse } from '../types';
+const callApi = async (url: string) => {
     try {
         const response = await fetch(url);
         if (response.ok) {
-            const data = await response.json();
+            const data: IGetImagesResponse = await response.json();
             return data;
         }
     } catch (e) {

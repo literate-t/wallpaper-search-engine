@@ -1,4 +1,6 @@
+import { MouseEventHandler } from 'react';
 import styled from 'styled-components';
+import { IImage } from '../../types';
 
 const Card = styled.div`
     margin-left: 8px;
@@ -14,11 +16,13 @@ const Img = styled.img`
     width: 100%;
     border-radius: 4px;
 `;
-// before 646.1ms
-// after 279.9ms
-const ImageCard = ({ imgData, onClick }) => {
-    // const { webformatURL, id } = imgData;
-    const { webformatURL, id, previewURL } = imgData;
+
+interface IImageCard {
+    imgData: IImage;
+    onClick: MouseEventHandler<HTMLDivElement>;
+}
+const ImageCard = ({ imgData, onClick }: IImageCard) => {
+    const { id, previewURL } = imgData;
 
     return (
         <Card onClick={onClick} key={id}>

@@ -8,7 +8,11 @@ const EmptyResultContainer = styled.div`
     color: var(--highlight);
 `;
 
-const EmptyResult = ({ isLoading }) => {
+interface EmptyResultPropsType {
+    isLoading: number;
+}
+
+const EmptyResult = ({ isLoading }: EmptyResultPropsType) => {
     return (
         <EmptyResultContainer>
             {isLoading ? (

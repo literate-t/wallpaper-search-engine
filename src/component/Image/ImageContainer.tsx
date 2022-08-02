@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, { useState, Suspense } from 'react';
 import ImageCard from './ImageCard';
+import { IGetImagesResponse, IImage } from '../../types';
 const ImageModal = React.lazy(() => import('./ImageModal'));
 
 const Container = styled.div`
@@ -17,8 +18,12 @@ const ResultsWrapper = styled.div`
     width: 100%;
 `;
 
-const ResultContainer = ({ data }) => {
-    const [clickedImage, setClickedImage] = useState(null);
+interface IDataPropsType {
+    data: IGetImagesResponse;
+}
+
+const ImageContainer = ({ data }: IDataPropsType) => {
+    const [clickedImage, setClickedImage] = useState<IImage | null>(null);
 
     const setImageInvalid = () => {
         setClickedImage(null);
@@ -49,4 +54,4 @@ const ResultContainer = ({ data }) => {
     );
 };
 
-export default ResultContainer;
+export default ImageContainer;

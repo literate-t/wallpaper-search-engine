@@ -15,6 +15,7 @@ import getImages from './api/getImages';
 import EmptyResult from './component/EmptyResult';
 import Title from './component/Title';
 import Search from './component/Search/Search';
+import { DataRequestType, IGetImagesResponse } from './types';
 
 const Container = styled.div`
     position: relative;
@@ -33,20 +34,24 @@ const Header = styled.div`
     text-align: center;
     padding: 120px 32px 16px 32px;
 `;
-type ParamType = {};
-const ParamsContext = createContext(null);
+type ParamType = (e: ChangeEvent<HTMLInputElement>) => void;
+const ParamsContext = createContext<ParamType | null>(null);
 
 function App() {
     const [query, setQuery] = useState('');
 
-    const [params, setParams] = useState({
-        orientation: '',
-        order: '',
+    const [params, setParams] = useState<DataRequestType>({
+        orientation: 'all',
+        order: 'popular',
         page: 1,
         per_page: 20,
     });
 
-    const [data, setData] = useState({ total: 0, totalHits: 0, hits: [] });
+    const [data, setData] = useState<IGetImagesResponse>({
+        total: 0,
+        totalHits: 0,
+        hits: [],
+    });
 
     const { orientation, order, per_page, page } = params;
 
@@ -66,14 +71,14 @@ function App() {
                 q: query,
                 orientation,
                 order,
-                per_page,
-                page,
+                per_page: per_page.toString(),
+                page: page.toString(),
             });
             // 값 갱신에서 값 누적으로 변경해야 함
             //setData(data);
-            if (1 === page) {
+            if (1 === page && data) {
                 setData(data);
-            } else {
+            } else if (data) {
                 setData((prevData) => ({
                     ...prevData,
                     hits: [...prevData.hits, ...data.hits],
@@ -96,7 +101,8 @@ function App() {
                 page: prev.page + 1,
             }));
         };
-        const callback = ([entry]) => {
+
+        const callback: IntersectionObserverCallback = ([entry]) => {
             if (!target.current) {
                 return;
             }
@@ -107,12 +113,12 @@ function App() {
         const observer = new IntersectionObserver(callback, {
             threshold: 1,
         });
-        observer.observe(target.current);
+        if (target.current) {
+            observer.observe(target.current);
+        }
     }, []);
 
     const numberOfPages = Math.ceil(data.totalHits / per_page);
-    // console.log(page, numberOfPages);
-    // console.log(data);
     return (
         <>
             <Container>
